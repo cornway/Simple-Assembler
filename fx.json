@@ -1,0 +1,90 @@
+{
+"isa": {
+    "opcodes": [
+        {
+            "opcode": "0x00",
+            "mnemonic": "nop",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "bytes": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x02",
+            "mnemonic": "mov",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "const",
+                "p3": ""
+            },
+            "bytes": {
+                "mnemonic": "2",
+                "p1": "2",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x04",
+            "mnemonic": "jnz",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "15:8",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0xff",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "label",
+                "p2": "",
+                "p3": ""
+            },
+            "bytes": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        }
+    ]
+}
+}
