@@ -22,7 +22,7 @@
                 "p2": "",
                 "p3": ""
             },
-            "bytes": {
+            "width": {
                 "mnemonic": "2",
                 "p1": "0",
                 "p2": "0",
@@ -30,7 +30,175 @@
             }
         },
         {
-            "opcode": "0x02",
+            "opcode": "0x80",
+            "mnemonic": "ldmi",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "const",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "4",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x81",
+            "mnemonic": "stmi",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "13:11",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "0x7",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "reg",
+                "p3": "const"
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "4"
+            }
+        },
+        {
+            "opcode": "0x40",
+            "mnemonic": "adds",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "13:11",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "0x7",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "reg",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x41",
+            "mnemonic": "mul",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "13:11",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "0x7",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "reg",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x42",
+            "mnemonic": "addi",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "15:11",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "0x1f",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "imm",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x43",
+            "mnemonic": "addi32",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "10:8",
+                "p2": "15:11",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0x7",
+                "p2": "0x1f",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "imm",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x10",
             "mnemonic": "mov",
             "map": {
                 "mnemonic": "7:0",
@@ -50,15 +218,15 @@
                 "p2": "const",
                 "p3": ""
             },
-            "bytes": {
+            "width": {
                 "mnemonic": "2",
-                "p1": "2",
-                "p2": "0",
+                "p1": "0",
+                "p2": "2",
                 "p3": "0"
             }
         },
         {
-            "opcode": "0x04",
+            "opcode": "0x20",
             "mnemonic": "jnz",
             "map": {
                 "mnemonic": "7:0",
@@ -78,7 +246,63 @@
                 "p2": "",
                 "p3": ""
             },
-            "bytes": {
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x21",
+            "mnemonic": "ji",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "15:8",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0xff",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "const",
+                "p2": "",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "4",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x04",
+            "mnemonic": "halt",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "15:8",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "width": {
                 "mnemonic": "2",
                 "p1": "0",
                 "p2": "0",

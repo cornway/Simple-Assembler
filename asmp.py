@@ -25,7 +25,7 @@ class AsmUnresolved:
         self.labelMask = 0x0
         self.constArray = []
 
-    def Parse(self, instruction, asmTok=[]):
+    def Parse(self, lineNum, instruction, asmTok=[]):
         byteArray = []
         constArray = []
         opcode = 0x00000000
@@ -48,23 +48,36 @@ class AsmUnresolved:
                 opcode = temp << ilsb
             elif itype == 'reg':
                 temp = int(token[1:])
-                if imask <= temp:
+                if temp <= imask:
                     temp = temp << ilsb
                     opcode = opcode | temp
+                else:
+                    print("Garbage at ", lineNum, ' Line')
             elif itype == 'imm':
                 temp = int(token)
-                if int(imask) <= temp:
+                if temp <= imask:
                     temp = temp << ilsb
                     opcode = opcode | temp
+                else:
+                    print("Garbage at ", lineNum, ' Line')
             elif itype == 'const':
                 temp = int(token, 16)
                 if (iwidth == 2):
                     self.constArray.append(temp & 0xff)
                     self.constArray.append((temp >> 8) & 0xff)
+                elif (iwidth == 4):
+                    self.constArray.append(temp & 0xff)
+                    self.constArray.append((temp >> 8) & 0xff)
+                    self.constArray.append((temp >> 16) & 0xff)
+                    self.constArray.append((temp >> 24) & 0xff)
+                else:
+                    print("Garbage at ", lineNum, ' Line')
             elif itype == 'label':
                 self.label = token
                 self.labelLsb = ilsb
                 self.labelMask = imask
+            else:
+                print("Garbage at ", lineNum, ' Line')
             i = i + 1
 
         i = 0
@@ -132,7 +145,7 @@ class AsmParser:
                 instruction = isa.get(token.tokens[0])
 
                 unresolved = AsmUnresolved()
-                unresLen = unresolved.Parse(instruction, token)
+                unresLen = unresolved.Parse(lineNum, instruction, token)
                 if AsmParser.debug:
                     instruction.Print()
                     unresolved.Print()

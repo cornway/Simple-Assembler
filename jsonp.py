@@ -35,7 +35,7 @@ class IsaInstruction:
         isaObjsMap = jsonDict['map']
         isaObjMask = jsonDict['mask']
         isaObjType = jsonDict['type']
-        isaObjWidth = jsonDict['bytes']
+        isaObjWidth = jsonDict['width']
         isaMnemonic = jsonDict['mnemonic']
 
         self.objs = {}
@@ -75,7 +75,7 @@ class IsaJson:
         for inst in self.instructions:
             if name == inst.mnemonic:
                 return inst
-        print('Error #1')
+        print('Can\'t find <', name, '> instruction!')
 
     def Print():
         for i in self.instructions:
