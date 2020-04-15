@@ -258,19 +258,19 @@
             "mnemonic": "ji",
             "map": {
                 "mnemonic": "7:0",
-                "p1": "15:8",
+                "p1": "",
                 "p2": "",
                 "p3": ""
             },
             "mask": {
                 "mnemonic": "0xff",
-                "p1": "0xff",
+                "p1": "",
                 "p2": "",
                 "p3": ""
             },
             "type": {
                 "mnemonic": "opcode",
-                "p1": "const",
+                "p1": "label_far",
                 "p2": "",
                 "p3": ""
             },

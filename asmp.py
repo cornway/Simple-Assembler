@@ -24,6 +24,7 @@ class AsmUnresolved:
         self.labelLsb = -1
         self.labelMask = 0x0
         self.constArray = []
+        self.labelFar = 0
 
     def Parse(self, lineNum, instruction, asmTok=[]):
         byteArray = []
@@ -76,6 +77,9 @@ class AsmUnresolved:
                 self.label = token
                 self.labelLsb = ilsb
                 self.labelMask = imask
+            elif itype == 'label_far':
+                self.label = token
+                self.labelFar = 1
             else:
                 print("Garbage at ", lineNum, ' Line')
             i = i + 1
@@ -86,13 +90,19 @@ class AsmUnresolved:
 
         return width
 
-    def Resolve(self, addr=0x0):
+    def Resolve(self, curAddr=0x0, labelAddr=0x0):
 
+        opcode = self.opcode
         if len(self.label) > 0:
-            addr = (addr & self.labelMask) << self.labelLsb
-            opcode = self.opcode | addr
-        else:
-            opcode = self.opcode
+            if (self.labelFar):
+                self.constArray.append(labelAddr & 0xff)
+                self.constArray.append((labelAddr >> 8) & 0xff)
+                self.constArray.append((labelAddr >> 16) & 0xff)
+                self.constArray.append((labelAddr >> 24) & 0xff)
+            else:
+                offset = (labelAddr - curAddr) & self.labelMask
+                offset = offset << self.labelLsb
+                opcode |= offset
 
         byteArray = []
         i = 0
@@ -111,31 +121,33 @@ class AsmUnresolved:
 class AsmParser:
     debug = 0
 
-    def __init__(self, filePath):
+    def __init__(self, lineBuffer):
         
         lineNum = 0
         self.labels = {}
         self.tokens = []
         self.labelsResolved = {}
         self.unresolved = []
-        with open(filePath, 'r') as asmFile:
-            for line in asmFile:
-                tokens = line.split(':')
-                asmTok = tokens[0]
-                if len(tokens) > 1:
-                    #label present
-                    token = tokens[0].replace(' ', '')
-                    if len(token) > 0:
-                        self.labels[token] = lineNum
-                    else:
-                        print('Error #0')
-                    asmTok = tokens[1]
+        for line in lineBuffer:
+            #Skip empty lines
+            if line[0] == '\n':
+                continue
+            tokens = line.split(':')
+            asmTok = tokens[0]
+            if len(tokens) > 1:
+                #label present
+                token = tokens[0].replace(' ', '')
+                if len(token) > 0:
+                    self.labels[token] = lineNum
+                else:
+                    print('Error #0')
+                asmTok = tokens[1]
 
-                if AsmParser.debug:
-                    print(lineNum, ': Token', asmTok)
+            if AsmParser.debug:
+                print(lineNum, ': Token', asmTok)
 
-                self.tokens.append(AsmToken(asmTok, lineNum))
-                lineNum = lineNum + 1
+            self.tokens.append(AsmToken(asmTok, lineNum))
+            lineNum = lineNum + 1
 
     def Phase_1(self, isa):
         addr = 0
@@ -167,9 +179,8 @@ class AsmParser:
                 labelLineNum = self.labels[u.label]
                 labelAddr = self.labelsResolved[labelLineNum]
                 addr = self.labelsResolved[lineNum]
-                labelAddr = labelAddr - addr
 
-            byteArray = u.Resolve(labelAddr)
+            byteArray = u.Resolve(addr, labelAddr)
 
             if AsmParser.debug:
                 print('Bytes: ', byteArray)

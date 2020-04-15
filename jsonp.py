@@ -66,6 +66,7 @@ class IsaJson:
 
         isa = jsondict['isa']
         opcodes = isa['opcodes']
+        self.alias = isa['alias']
 
         self.instructions = []
         for opcode in opcodes:
@@ -76,6 +77,19 @@ class IsaJson:
             if name == inst.mnemonic:
                 return inst
         print('Can\'t find <', name, '> instruction!')
+
+    def getAlias(self, name):
+        for alias in self.alias:
+            if alias['name'] == name:
+                return alias
+        print('Can\'t find <', name, '> Alias!')
+        return None
+
+    def containsAlias(self, token):
+        for alias in self.alias:
+            if alias['name'] in token:
+                return alias
+        return None
 
     def Print():
         for i in self.instructions:
