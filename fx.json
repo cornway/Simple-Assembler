@@ -86,6 +86,34 @@
             }
         },
         {
+            "opcode": "0x81",
+            "mnemonic": "stmdb",
+            "map": {
+                "mnemonic": "7:0",
+                "p1": "11:8",
+                "p2": "15:12",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff",
+                "p1": "0xf",
+                "p2": "0xf",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode",
+                "p1": "reg",
+                "p2": "reg",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "2",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
             "opcode": "0x40",
             "mnemonic": "adds",
             "map": {
@@ -308,6 +336,15 @@
                 "p2": "0",
                 "p3": "0"
             }
+        }
+    ],
+    "alias": [
+        {
+            "name": "stm",
+            "alias": "stmdb",
+            "p1": "%1",
+            "p2": "%2",
+            "p3": ""
         }
     ]
 }

@@ -1,4 +1,5 @@
 
+            stm r0 r1
 label:      nop
             mov r0 0xbabe
 label3:     mov r1 0xbeef

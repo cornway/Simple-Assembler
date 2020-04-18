@@ -1,4 +1,5 @@
 from jsonp import *
+from pp import *
 
 class AsmToken:
     def __init__(self, lineStr='', lineNum=0):
@@ -149,6 +150,19 @@ class AsmParser:
             self.tokens.append(AsmToken(asmTok, lineNum))
             lineNum = lineNum + 1
 
+    def Phase_0(self, isa):
+        addr = 0
+        lineNum = 0
+        tokens = self.tokens
+        self.tokens = []
+        for token in tokens:
+            if len(token.tokens) > 0:
+                alias = AsmAlias.ApplyAlias(token, isa)
+                if alias is not None:
+                    self.tokens.append(alias)
+                else:
+                    self.tokens.append(token)
+
     def Phase_1(self, isa):
         addr = 0
         lineNum = 0
@@ -191,6 +205,11 @@ class AsmParser:
             lineNum = lineNum + 1
 
         return binaryArray
+
+    def PrintTokens (self):
+        print('Tokens ********')
+        for token in self.tokens:
+            token.Print()
 
     def Print(self):
         print('Tokens ********')
