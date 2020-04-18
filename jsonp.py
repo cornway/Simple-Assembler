@@ -23,7 +23,16 @@ class IsaInstObj:
         self.width = int(width, 16)
 
 class IsaInstruction:
-    objTypes = ['opcode', 'const', 'imm', 'reg', 'label']
+    objTypes = [
+        'opcode',
+        'const',
+        'imm',
+        'reg',
+        'label',
+        'label_far',
+        'word',
+        'aciiz',
+        'allign']
     objNames = ['mnemonic', 'p1', 'p2', 'p3']
 
     def __init__(self):

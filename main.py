@@ -9,13 +9,11 @@ pp = AsmAlias('ex.asm')
 pp.RemoveComments()
 asm = AsmParser(pp.lineBuffer)
 
-asm.Phase_0(isaJson)
+asm.ParseAlias(isaJson)
 
-asm.PrintTokens()
-
-asm.Phase_1(isaJson)
-
-binArray = asm.Phase_2(isaJson)
+asm.ParseTokens(isaJson)
+asm.ParseSections(isaJson)
+binArray = asm.Resolve(isaJson)
 
 mifWriter = MifWriter(binArray, 2)
 

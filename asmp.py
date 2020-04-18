@@ -26,6 +26,7 @@ class AsmUnresolved:
         self.labelMask = 0x0
         self.constArray = []
         self.labelFar = 0
+        self.allign = 0
 
     def Parse(self, lineNum, instruction, asmTok=[]):
         byteArray = []
@@ -63,16 +64,9 @@ class AsmUnresolved:
                 else:
                     print("Garbage at ", lineNum, ' Line')
             elif itype == 'const':
-                temp = int(token, 16)
-                if (iwidth == 2):
-                    self.constArray.append(temp & 0xff)
-                    self.constArray.append((temp >> 8) & 0xff)
-                elif (iwidth == 4):
-                    self.constArray.append(temp & 0xff)
-                    self.constArray.append((temp >> 8) & 0xff)
-                    self.constArray.append((temp >> 16) & 0xff)
-                    self.constArray.append((temp >> 24) & 0xff)
-                else:
+                const = int(token, 16)
+                iwidth = self.__appendConstLe(const, iwidth)
+                if iwidth == 0:
                     print("Garbage at ", lineNum, ' Line')
             elif itype == 'label':
                 self.label = token
@@ -81,25 +75,60 @@ class AsmUnresolved:
             elif itype == 'label_far':
                 self.label = token
                 self.labelFar = 1
-            else:
+            elif itype == 'asciz':
+                token = asmTok.tokens[i + 1]
+                width = self.__appendAsciiz(token)
+                break
+            elif itype == 'allign':
+                self.allign = int(asmTok.tokens[i + 1])
+                break
+            elif itype != 'word':
                 print("Garbage at ", lineNum, ' Line')
             i = i + 1
 
-        i = 0
         self.opcode = opcode
         self.opcodeWidth = instruction.objs['mnemonic'].width
+        self.width = width
 
-        return width
+    def appendBytes(self, byte, len):
+        _len = len
+        while len > 0:
+            self.constArray.append(byte)
+            len -= 1
+        return _len
+
+    def __appendConstLe (self, const, width):
+        twidth = width
+        if width == 1:
+            self.constArray.append(const & 0xff)
+        if width == 2:
+            self.constArray.append(const & 0xff)
+            self.constArray.append((const >> 8) & 0xff)
+        elif width == 4:
+            self.constArray.append(const & 0xff)
+            self.constArray.append((const >> 8) & 0xff)
+            self.constArray.append((const >> 16) & 0xff)
+            self.constArray.append((const >> 24) & 0xff)
+        else:
+            twidth = 0
+        return twidth
+
+    def __appendAsciiz(self, asciiz):
+        width = 0
+        for char in asciiz:
+            if char != '"':
+                self.constArray.append(ord(char) & 0xff)
+                width += 1
+        self.constArray.append(0)
+        return width + 1
+
 
     def Resolve(self, curAddr=0x0, labelAddr=0x0):
 
         opcode = self.opcode
         if len(self.label) > 0:
             if (self.labelFar):
-                self.constArray.append(labelAddr & 0xff)
-                self.constArray.append((labelAddr >> 8) & 0xff)
-                self.constArray.append((labelAddr >> 16) & 0xff)
-                self.constArray.append((labelAddr >> 24) & 0xff)
+                self.__appendConstLe(labelAddr, 4)
             else:
                 offset = (labelAddr - curAddr) & self.labelMask
                 offset = offset << self.labelLsb
@@ -150,7 +179,7 @@ class AsmParser:
             self.tokens.append(AsmToken(asmTok, lineNum))
             lineNum = lineNum + 1
 
-    def Phase_0(self, isa):
+    def ParseAlias(self, isa):
         addr = 0
         lineNum = 0
         tokens = self.tokens
@@ -163,7 +192,7 @@ class AsmParser:
                 else:
                     self.tokens.append(token)
 
-    def Phase_1(self, isa):
+    def ParseTokens(self, isa):
         addr = 0
         lineNum = 0
         for token in self.tokens:
@@ -171,19 +200,39 @@ class AsmParser:
                 instruction = isa.get(token.tokens[0])
 
                 unresolved = AsmUnresolved()
-                unresLen = unresolved.Parse(lineNum, instruction, token)
+                unresolved.Parse(lineNum, instruction, token)
                 if AsmParser.debug:
                     instruction.Print()
                     unresolved.Print()
 
                 self.unresolved.append(unresolved)
-                self.labelsResolved[lineNum] = addr
-
-                addr = addr + unresLen
                 lineNum = lineNum + 1
 
+    def __ParseSection(self, u, curAddr):
+        if u.allign > 0:
+            rem = curAddr % u.allign
+            rem = u.allign - rem
+            u.appendBytes(0, rem)
+            u.width += rem
+            return 1
+        return 0
 
-    def Phase_2(self, isa):
+    def ParseSections(self, isa):
+        lineNum = 0
+        tlen = 0
+        addr = 0
+        unresolved = self.unresolved
+        self.unresolved = []
+        for u in unresolved:
+
+            self.__ParseSection(u, addr)
+            print(hex(addr), tlen)
+            self.labelsResolved[lineNum] = addr
+            self.unresolved.append(u)
+            lineNum += 1
+            addr += u.width
+
+    def Resolve(self, isa):
         lineNum = 0
         addr = 0
         binaryArray = []

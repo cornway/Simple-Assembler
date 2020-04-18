@@ -336,6 +336,90 @@
                 "p2": "0",
                 "p3": "0"
             }
+        },
+        {
+            "opcode": "0x0",
+            "mnemonic": ".word",
+            "map": {
+                "mnemonic": "",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "0",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "word",
+                "p1": "const",
+                "p2": "",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "0",
+                "p1": "2",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x0",
+            "mnemonic": ".asciz",
+            "map": {
+                "mnemonic": "",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "asciz",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "0",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
+        },
+        {
+            "opcode": "0x0",
+            "mnemonic": ".allign",
+            "map": {
+                "mnemonic": "",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "mask": {
+                "mnemonic": "",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "type": {
+                "mnemonic": "allign",
+                "p1": "",
+                "p2": "",
+                "p3": ""
+            },
+            "width": {
+                "mnemonic": "0",
+                "p1": "0",
+                "p2": "0",
+                "p3": "0"
+            }
         }
     ],
     "alias": [
