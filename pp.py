@@ -19,19 +19,20 @@ class AsmAlias:
                 if len(tokens[0]) > 0:
                     self.lineBuffer.append(tokens[0])
             else:
-                tokens = raw.split('/*')
-                if len(tokens) > 1:
-                    if len(tokens[0]) > 0:
-                        self.lineBuffer.append(tokens[0])
-                    multilineBegin = 1
+                if '/*' not in raw and '*/' not in raw:
+                    self.lineBuffer.append(raw)
+                elif '/*' in raw:
+                    tokens = raw.split('/*')
+                    if len(tokens) > 1:
+                        if len(tokens[0]) > 0:
+                            self.lineBuffer.append(tokens[0])
+                        multilineBegin = 1
                 elif multilineBegin:
                     tokens = raw.split('*/')
                     if len(tokens) > 1:
                         if len(tokens[1]) > 0:
                             self.lineBuffer.append(tokens[0])
                         multilineBegin = 0
-                else:
-                    self.lineBuffer.append(tokens[0])
 
     def ApplyAlias(asmToken_in, isa):
         mnemonic = asmToken_in.tokens[0]
@@ -66,4 +67,59 @@ class AsmAlias:
         for line in self.lineBuffer:
             print(line)
 
+class Parse:
+    def ParseInt32Le (token):
+        const = 0
+        try:
+            const = int(token)
+        except ValueError:
+            try:
+                const = int(token, 16)
+            except ValueError:
+                raise ValueError('')
+        return const
 
+    def Tokenize(lineStr):
+        odd = 0
+        tokens = []
+        for token in lineStr.split('"'):
+            if not odd:
+                for stoken in token.split():
+                    rtoken = stoken.replace(' ', '')
+                    if len(rtoken) > 0:
+                        tokens.append(rtoken)
+            else:
+                tokens.append(token)
+            odd = 1 - odd
+        return tokens
+
+    def appendConstLe (constArray, const, width):
+        if width == 1:
+            constArray.append(const & 0xff)
+        if width == 2:
+            constArray.append(const & 0xff)
+            constArray.append((const >> 8) & 0xff)
+        elif width == 4:
+            constArray.append(const & 0xff)
+            constArray.append((const >> 8) & 0xff)
+            constArray.append((const >> 16) & 0xff)
+            constArray.append((const >> 24) & 0xff)
+        else:
+            raise ValueError
+        return width
+
+    def appendBytes(constArray, byte, len):
+        _len = len
+        while len > 0:
+            constArray.append(byte)
+            len -= 1
+        return _len
+
+    def appendAsciiz(constArray, asciiz):
+        width = 0
+        for char in asciiz:
+            if char != '"':
+                constArray.append(ord(char) & 0xff)
+                width += 1
+        constArray.append(0)
+        return width + 1

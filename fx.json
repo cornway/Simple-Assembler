@@ -6,429 +6,463 @@
             "mnemonic": "nop",
             "map": {
                 "mnemonic": "7:0",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "p1": "", "p2": "", "p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0xff","p1": "","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "opcode","p1": "","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x80",
             "mnemonic": "ldmi",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "7:0","p1": "10:8","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "const",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "const","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "4",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "4","p3": "0"
             }
         },
         {
             "opcode": "0x81",
             "mnemonic": "stmi",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "13:11",
-                "p3": ""
+                "mnemonic": "7:0","p1": "10:8","p2": "13:11","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "0x7",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "0x7","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "reg",
-                "p3": "const"
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": "const"
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "4"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "4"
             }
         },
         {
-            "opcode": "0x81",
-            "mnemonic": "stmdb",
+            "opcode": "0x82",
+            "mnemonic": "stm",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "11:8",
-                "p2": "15:12",
-                "p3": ""
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0xf",
-                "p2": "0xf",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "reg",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x83",
+            "mnemonic": "ldm",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x84",
+            "mnemonic": "stmdb",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x85",
+            "mnemonic": "ldmia",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x86",
+            "mnemonic": "stmdb16",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x87",
+            "mnemonic": "ldmia16",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x40",
             "mnemonic": "adds",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "13:11",
-                "p3": ""
+                "mnemonic": "7:0","p1": "10:8","p2": "13:11","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "0x7",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "0x7","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "reg",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x41",
             "mnemonic": "mul",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "13:11",
-                "p3": ""
+                "mnemonic": "7:0","p1": "10:8","p2": "13:11","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "0x7",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "0x7","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "reg",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x42",
             "mnemonic": "addi",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "15:11",
-                "p3": ""
+                "mnemonic": "7:0","p1": "10:8","p2": "15:11","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "0x1f",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "0x1f","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "imm",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x43",
             "mnemonic": "addi32",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "15:11",
-                "p3": ""
+                "mnemonic": "7:0","p1": "10:8","p2": "15:11","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "0x1f",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "0x1f","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "imm",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x44",
+            "mnemonic": "cmp",
+            "map": {
+                "mnemonic": "7:0","p1": "10:8","p2": "15:11","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0x7","p2": "0x1f","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x10",
             "mnemonic": "mov",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "10:8",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "7:0","p1": "11:8","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0x7",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0x7","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "reg",
-                "p2": "const",
-                "p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "const","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "2",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "2","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x11",
+            "mnemonic": "movw",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0x7","p2": "","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "const label_far","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "4","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x12",
+            "mnemonic": "movr",
+            "map": {
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x20",
             "mnemonic": "jnz",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "15:8",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "7:0","p1": "15:8","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "0xff",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0xff","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "label",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "opcode","p1": "label","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x21",
-            "mnemonic": "ji",
+            "mnemonic": "jeq",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "7:0","p1": "15:8","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0xff","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "label_far",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "opcode","p1": "label","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "4",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
-            "opcode": "0x04",
-            "mnemonic": "halt",
+            "opcode": "0x22",
+            "mnemonic": "jneq",
             "map": {
-                "mnemonic": "7:0",
-                "p1": "15:8",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "7:0","p1": "15:8","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0xff","p1": "0xff","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "opcode",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "opcode","p1": "label","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "2",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x23",
+            "mnemonic": "ji",
+            "map": {
+                "mnemonic": "7:0","p1": "","p2": "","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "","p2": "","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "label_far","p2": "","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "4","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0xff",
+            "mnemonic": "halt",
+            "map": {
+                "mnemonic": "7:0","p1": "15:8","p2": "","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "","p2": "","p3": ""
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "","p2": "","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x0",
             "mnemonic": ".word",
             "map": {
-                "mnemonic": "",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "","p1": "","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0","p1": "","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "word",
-                "p1": "const",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "data","p1": "const","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "0",
-                "p1": "2",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "0","p1": "2","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x0",
-            "mnemonic": ".asciz",
+            "mnemonic": ".dword",
             "map": {
-                "mnemonic": "",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "","p1": "","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "0","p1": "","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "asciz",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "data","p1": "const","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "0",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "0","p1": "4","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x0",
+            "mnemonic": ".byte",
+            "map": {
+                "mnemonic": "","p1": "","p2": "","p3": ""
+            },
+            "mask": {
+                "mnemonic": "0","p1": "","p2": "","p3": ""
+            },
+            "type": {
+                "mnemonic": "data","p1": "const","p2": "","p3": ""
+            },
+            "width": {
+                "mnemonic": "0","p1": "1","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x0",
+            "mnemonic": ".asciiz",
+            "map": {
+                "mnemonic": "","p1": "","p2": "","p3": ""
+            },
+            "mask": {
+                "mnemonic": "","p1": "","p2": "","p3": ""
+            },
+            "type": {
+                "mnemonic": "asciz","p1": "","p2": "","p3": ""
+            },
+            "width": {
+                "mnemonic": "0","p1": "0","p2": "0","p3": "0"
             }
         },
         {
             "opcode": "0x0",
             "mnemonic": ".allign",
             "map": {
-                "mnemonic": "",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "","p1": "","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "","p1": "","p2": "","p3": ""
             },
             "type": {
-                "mnemonic": "allign",
-                "p1": "",
-                "p2": "",
-                "p3": ""
+                "mnemonic": "allign","p1": "","p2": "","p3": ""
             },
             "width": {
-                "mnemonic": "0",
-                "p1": "0",
-                "p2": "0",
-                "p3": "0"
+                "mnemonic": "0","p1": "0","p2": "0","p3": "0"
             }
         }
     ],
     "alias": [
         {
-            "name": "stm",
+            "name": "push",
             "alias": "stmdb",
+            "p1": "sp",
+            "p2": "%1",
+            "p3": ""
+        },
+        {
+            "name": "pop",
+            "alias": "ldmia",
+            "p1": "sp",
+            "p2": "%1",
+            "p3": ""
+        },
+        {
+            "name": "inc",
+            "alias": "addi32",
             "p1": "%1",
             "p2": "%2",
             "p3": ""
+        }
+    ],
+    "regmap": [
+        {
+            "sp": "r10",
+            "pc": "r11",
+            "lr": "r12"
         }
     ]
 }

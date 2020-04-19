@@ -3,14 +3,8 @@ from pp import *
 
 class AsmToken:
     def __init__(self, lineStr='', lineNum=0):
-        rtokens = lineStr.split()
-        self.tokens = []
         self.lineNum = lineNum
-        for rtoken in rtokens:
-            token = rtoken.replace(' ', '')
-            if len(token) > 0:
-                self.tokens.append(token)
-                self.lineNum = lineNum
+        self.tokens = Parse.Tokenize(lineStr)
 
     def Print(self):
         if (self.lineNum >= 0):
@@ -28,7 +22,7 @@ class AsmUnresolved:
         self.labelFar = 0
         self.allign = 0
 
-    def Parse(self, lineNum, instruction, asmTok=[]):
+    def Parse(self, lineNum, isa, instruction, asmTok=[]):
         byteArray = []
         constArray = []
         opcode = 0x00000000
@@ -39,96 +33,84 @@ class AsmUnresolved:
         for token in asmTok.tokens:
 
             iname = IsaInstruction.objNames[i]
-            itype = instruction.objs[iname].type
+            itypes = instruction.objs[iname].type.split()
             imask = instruction.objs[iname].mask
             iwidth = instruction.objs[iname].width
             ilsb = instruction.objs[iname].lsb
-
+            break_outer = False
             width += iwidth
 
-            if itype == 'opcode':
-                temp = imask & instruction.opcode
-                opcode = temp << ilsb
-            elif itype == 'reg':
-                temp = int(token[1:])
-                if temp <= imask:
+            for itype in itypes:
+                if itype == 'opcode':
+                    temp = imask & instruction.opcode
+                    opcode = temp << ilsb
+                    break
+                elif itype == 'reg':
+                    if token in isa.regmap:
+                        token = isa.regmap[token]
+                    if token[0] in 'r':
+                        try:
+                            temp = Parse.ParseInt32Le(token[1:])
+                        except ValueError:
+                            continue
+                        temp = temp << ilsb
+                        opcode = opcode | temp
+                        break
+                elif itype == 'imm':
+                    try:
+                        const = Parse.ParseInt32Le(token)
+                    except ValueError:
+                        continue
                     temp = temp << ilsb
                     opcode = opcode | temp
-                else:
+                    break
+                elif itype == 'const':
+                    try:
+                        const = Parse.ParseInt32Le(token)
+                    except ValueError:
+                        continue
+                    iwidth = Parse.appendConstLe(self.constArray, const, iwidth)
+                    break
+                elif itype == 'label':
+                    if not token.isdigit():
+                        self.label = token
+                        self.labelLsb = ilsb
+                        self.labelMask = imask
+                        break
+                elif itype == 'label_far':
+                    if not token.isdigit():
+                        self.label = token
+                        self.labelFar = 1
+                        break
+                elif itype == 'asciz':
+                    token = asmTok.tokens[i + 1]
+                    width = Parse.appendAsciiz(self.constArray, token)
+                    break_outer = True
+                    break
+                elif itype == 'allign':
+                    token = asmTok.tokens[i + 1]
+                    try:
+                        const = Parse.ParseInt32Le(token)
+                    except ValueError:
+                        raise ValueError
+                    self.allign = const
+                    break_outer = True
+                    break
+                elif itype != 'data':
                     print("Garbage at ", lineNum, ' Line')
-            elif itype == 'imm':
-                temp = int(token)
-                if temp <= imask:
-                    temp = temp << ilsb
-                    opcode = opcode | temp
-                else:
-                    print("Garbage at ", lineNum, ' Line')
-            elif itype == 'const':
-                const = int(token, 16)
-                iwidth = self.__appendConstLe(const, iwidth)
-                if iwidth == 0:
-                    print("Garbage at ", lineNum, ' Line')
-            elif itype == 'label':
-                self.label = token
-                self.labelLsb = ilsb
-                self.labelMask = imask
-            elif itype == 'label_far':
-                self.label = token
-                self.labelFar = 1
-            elif itype == 'asciz':
-                token = asmTok.tokens[i + 1]
-                width = self.__appendAsciiz(token)
+            if (break_outer):
                 break
-            elif itype == 'allign':
-                self.allign = int(asmTok.tokens[i + 1])
-                break
-            elif itype != 'word':
-                print("Garbage at ", lineNum, ' Line')
             i = i + 1
 
         self.opcode = opcode
         self.opcodeWidth = instruction.objs['mnemonic'].width
         self.width = width
 
-    def appendBytes(self, byte, len):
-        _len = len
-        while len > 0:
-            self.constArray.append(byte)
-            len -= 1
-        return _len
-
-    def __appendConstLe (self, const, width):
-        twidth = width
-        if width == 1:
-            self.constArray.append(const & 0xff)
-        if width == 2:
-            self.constArray.append(const & 0xff)
-            self.constArray.append((const >> 8) & 0xff)
-        elif width == 4:
-            self.constArray.append(const & 0xff)
-            self.constArray.append((const >> 8) & 0xff)
-            self.constArray.append((const >> 16) & 0xff)
-            self.constArray.append((const >> 24) & 0xff)
-        else:
-            twidth = 0
-        return twidth
-
-    def __appendAsciiz(self, asciiz):
-        width = 0
-        for char in asciiz:
-            if char != '"':
-                self.constArray.append(ord(char) & 0xff)
-                width += 1
-        self.constArray.append(0)
-        return width + 1
-
-
     def Resolve(self, curAddr=0x0, labelAddr=0x0):
-
         opcode = self.opcode
         if len(self.label) > 0:
             if (self.labelFar):
-                self.__appendConstLe(labelAddr, 4)
+                Parse.appendConstLe(self.constArray, labelAddr, 4)
             else:
                 offset = (labelAddr - curAddr) & self.labelMask
                 offset = offset << self.labelLsb
@@ -152,7 +134,6 @@ class AsmParser:
     debug = 0
 
     def __init__(self, lineBuffer):
-        
         lineNum = 0
         self.labels = {}
         self.tokens = []
@@ -200,7 +181,7 @@ class AsmParser:
                 instruction = isa.get(token.tokens[0])
 
                 unresolved = AsmUnresolved()
-                unresolved.Parse(lineNum, instruction, token)
+                unresolved.Parse(lineNum, isa, instruction, token)
                 if AsmParser.debug:
                     instruction.Print()
                     unresolved.Print()
@@ -212,8 +193,9 @@ class AsmParser:
         if u.allign > 0:
             rem = curAddr % u.allign
             rem = u.allign - rem
-            u.appendBytes(0, rem)
-            u.width += rem
+            if rem and rem != u.allign:
+                Parse.appendBytes(u.constArray, 0, rem)
+                u.width += rem
             return 1
         return 0
 
