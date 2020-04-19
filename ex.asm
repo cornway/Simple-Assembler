@@ -1,11 +1,13 @@
 /*Memory test program*/
+            ji entry
+            .section 0x10
 mem_start:  .dword 0x00001000
 mem_end:    .dword 0x00002000
 sp_top:     .dword 0x40000100
 dbg_addr:   .dword 0x800000A0
             .asciiz "hello world! ****"
             .allign 2
-            movw r5 sp_top
+entry:      movw r5 sp_top
             ldm sp r5
             movw r5 mem_start
             ldm r0 r5

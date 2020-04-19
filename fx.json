@@ -433,29 +433,36 @@
             "width": {
                 "mnemonic": "0","p1": "0","p2": "0","p3": "0"
             }
+        },
+        {
+            "opcode": "0x0",
+            "mnemonic": ".section",
+            "map": {
+                "mnemonic": "","p1": "","p2": "","p3": ""
+            },
+            "mask": {
+                "mnemonic": "","p1": "","p2": "","p3": ""
+            },
+            "type": {
+                "mnemonic": "section","p1": "","p2": "","p3": ""
+            },
+            "width": {
+                "mnemonic": "0","p1": "0","p2": "0","p3": "0"
+            }
         }
     ],
     "alias": [
         {
             "name": "push",
-            "alias": "stmdb",
-            "p1": "sp",
-            "p2": "%1",
-            "p3": ""
+            "alias": "stmdb","p1": "sp","p2": "%1","p3": ""
         },
         {
             "name": "pop",
-            "alias": "ldmia",
-            "p1": "sp",
-            "p2": "%1",
-            "p3": ""
+            "alias": "ldmia","p1": "sp","p2": "%1","p3": ""
         },
         {
             "name": "inc",
-            "alias": "addi32",
-            "p1": "%1",
-            "p2": "%2",
-            "p3": ""
+            "alias": "addi32","p1": "%1","p2": "%2","p3": ""
         }
     ],
     "regmap": [

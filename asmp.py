@@ -21,6 +21,10 @@ class AsmUnresolved:
         self.constArray = []
         self.labelFar = 0
         self.allign = 0
+        self.section = -1
+
+    def __ApplyWord(self, val, mask, lsb):
+        return (val & mask) << lsb
 
     def Parse(self, lineNum, isa, instruction, asmTok=[]):
         byteArray = []
@@ -42,62 +46,61 @@ class AsmUnresolved:
 
             for itype in itypes:
                 if itype == 'opcode':
-                    temp = imask & instruction.opcode
-                    opcode = temp << ilsb
+                    opcode |= self.__ApplyWord(instruction.opcode, imask, ilsb)
                     break
                 elif itype == 'reg':
                     if token in isa.regmap:
+                        # Remap register name
                         token = isa.regmap[token]
                     if token[0] in 'r':
+                        # direct register addressing
                         try:
                             temp = Parse.ParseInt32Le(token[1:])
                         except ValueError:
                             continue
-                        temp = temp << ilsb
-                        opcode = opcode | temp
+                        opcode |= self.__ApplyWord(temp, imask, ilsb)
                         break
                 elif itype == 'imm':
                     try:
                         const = Parse.ParseInt32Le(token)
                     except ValueError:
                         continue
-                    temp = temp << ilsb
-                    opcode = opcode | temp
+                    opcode |= self.__ApplyWord(temp, imask, ilsb)
                     break
                 elif itype == 'const':
                     try:
                         const = Parse.ParseInt32Le(token)
                     except ValueError:
                         continue
-                    iwidth = Parse.appendConstLe(self.constArray, const, iwidth)
+                    Parse.appendConstLe(self.constArray, const, iwidth)
                     break
-                elif itype == 'label':
+                elif itype in ['label', 'label_far']:
                     if not token.isdigit():
                         self.label = token
                         self.labelLsb = ilsb
                         self.labelMask = imask
-                        break
-                elif itype == 'label_far':
-                    if not token.isdigit():
-                        self.label = token
-                        self.labelFar = 1
+                        if itype == 'label_far':
+                            self.labelFar = 1
                         break
                 elif itype == 'asciz':
                     token = asmTok.tokens[i + 1]
                     width = Parse.appendAsciiz(self.constArray, token)
                     break_outer = True
                     break
-                elif itype == 'allign':
+                elif itype in ['allign', 'section']:
                     token = asmTok.tokens[i + 1]
                     try:
                         const = Parse.ParseInt32Le(token)
                     except ValueError:
                         raise ValueError
-                    self.allign = const
+                    if itype == 'allign':
+                        self.allign = const
+                    else:
+                        self.section = const
                     break_outer = True
                     break
                 elif itype != 'data':
-                    print("Garbage at ", lineNum, ' Line')
+                    raise ValueError("Garbage at ", lineNum, ' Line')
             if (break_outer):
                 break
             i = i + 1
@@ -112,9 +115,7 @@ class AsmUnresolved:
             if (self.labelFar):
                 Parse.appendConstLe(self.constArray, labelAddr, 4)
             else:
-                offset = (labelAddr - curAddr) & self.labelMask
-                offset = offset << self.labelLsb
-                opcode |= offset
+                opcode |= self.__ApplyWord(labelAddr - curAddr, self.labelMask, self.labelLsb)
 
         byteArray = []
         i = 0
@@ -141,18 +142,20 @@ class AsmParser:
         self.unresolved = []
         for line in lineBuffer:
             #Skip empty lines
-            if line[0] == '\n':
+            if line[0] == '\n' or len(line) == 0:
+                lineNum += 1
                 continue
-            tokens = line.split(':')
-            asmTok = tokens[0]
-            if len(tokens) > 1:
-                #label present
-                token = tokens[0].replace(' ', '')
-                if len(token) > 0:
-                    self.labels[token] = lineNum
+            odd = 0
+            for token in line.split(':'):
+                if not odd:
+                    asmTok = token
                 else:
-                    print('Error #0')
-                asmTok = tokens[1]
+                    if len(asmTok) > 0:
+                        self.labels[asmTok] = lineNum
+                    else:
+                        raise ValueError
+                    asmTok = token
+                odd = 1 - odd
 
             if AsmParser.debug:
                 print(lineNum, ': Token', asmTok)
@@ -196,8 +199,12 @@ class AsmParser:
             if rem and rem != u.allign:
                 Parse.appendBytes(u.constArray, 0, rem)
                 u.width += rem
-            return 1
-        return 0
+        elif u.section > 0:
+            if curAddr > u.section:
+                raise ValueError
+            Parse.appendBytes(u.constArray, 0, u.section - curAddr)
+            return u.section
+        return curAddr + u.width
 
     def ParseSections(self, isa):
         lineNum = 0
@@ -206,13 +213,10 @@ class AsmParser:
         unresolved = self.unresolved
         self.unresolved = []
         for u in unresolved:
-
-            self.__ParseSection(u, addr)
-            print(hex(addr), tlen)
             self.labelsResolved[lineNum] = addr
+            addr = self.__ParseSection(u, addr)
             self.unresolved.append(u)
             lineNum += 1
-            addr += u.width
 
     def Resolve(self, isa):
         lineNum = 0
@@ -234,18 +238,4 @@ class AsmParser:
                 binaryArray.append(b)
 
             lineNum = lineNum + 1
-
         return binaryArray
-
-    def PrintTokens (self):
-        print('Tokens ********')
-        for token in self.tokens:
-            token.Print()
-
-    def Print(self):
-        print('Tokens ********')
-        for token in self.tokens:
-            token.Print()
-        print('Labels ********')
-        for label, num in self.labels.items():
-            print(label, num)
