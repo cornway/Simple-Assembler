@@ -23,8 +23,9 @@ mifWriter.Write('out.mif')
 mifWriter.Print()
 
 sim = SimCpu('sim.json')
-sim.Config(2, 100000)
+sim.Config(isaJson, 16, 100000)
 sim.Startup(binArray)
 
 sim.Execute(isaJson)
 sim.DumpRegs()
+sim.DumpMem(0x1000, 0x1010)

@@ -4,85 +4,68 @@
             {
                 "name": "nop",
                 "args": "",
-                "return": "",
                 "func" : ""
             },
             {
                 "name": "movw",
                 "args": "p1",
-                "return": "",
                 "func" : "lambda cpu, args : cpu.Movw( args[0], cpu.LdmLe(cpu.pc_addr + 2, 4) )"
             },
             {
                 "name": "movr",
                 "args": "p1 p2",
-                "return": "",
                 "func" : "lambda cpu, args : cpu.Movr( args[0], args[1] )"
             },
             {
                 "name": "stm",
                 "args": "p1 p2",
-                "return": "",
-                "func": "lambda cpu, args : cpu.StmLe(args[0], args[1], 4)"
+                "func": "lambda cpu, args : cpu.StmLe( cpu.rg[args[1]] , cpu.rg[args[1]], 4)"
             },
             {
                 "name": "ldm",
-                "args": "p2",
-                "return": "p1",
-                "func": "lambda cpu, args: cpu.LdmLe(args[0], 4)"
+                "args": "p1 p2",
+                "func": "lambda cpu, args : cpu.Movw( args[0], cpu.LdmLe( cpu.rg[args[1]], 4) )"
             },
             {
                 "name": "stmdb",
                 "args": "p1 p2",
-                "return": "",
                 "func": "lambda cpu, args : cpu.StmLe( cpu.Addi(args[0], -4) , cpu.rg[args[1]], 4)"
             },
             {
                 "name": "ldmia",
                 "args": "p1 p2",
-                "return": "",
                 "func": "lambda cpu, args : cpu.Movw( args[0], cpu.LdmLe( cpu.Addia(args[1], 4), 4) )"
             },
             {
                 "name": "cmp",
                 "args": "p1 p2",
-                "return": "",
                 "func": "lambda cpu, args : cpu.alu.Cmp( cpu, args[0], args[1] )"
             },
             {
                 "name": "addi32",
                 "args": "p1 p2",
-                "return": "",
                 "func": "lambda cpu, args : cpu.alu.Addi32( cpu, args[0], args[1] )"
             },
             {
                 "name": "jnz",
                 "args": "p1",
-                "return": "",
                 "func": "lambda cpu, args : cpu.JnzCond( args[0], True )"
             },
             {
                 "name": "jneq",
                 "args": "p1",
-                "return": "",
                 "func": "lambda cpu, args : cpu.JnzCond( args[0], not cpu.alu.zero )"
             },
             {
                 "name": "jeq",
                 "args": "p1",
-                "return": "",
                 "func": "lambda cpu, args : cpu.JnzCond( args[0], cpu.alu.zero )"
             },
             {
                 "name": "halt",
                 "args": "",
-                "return": "",
                 "func": "lambda cpu, args : cpu.Halt()"
             }
-        ],
-        "regmap": {
-            "pc": "11",
-            "sp": "10"
-        }
+        ]
     }
 }

@@ -47,15 +47,14 @@ class SimCpu:
         jsondict = json.loads(jsonc)
         isa = jsondict['isa']
         self.instructions = isa['instructions']
-        regmap = isa['regmap']
-        self.pc_rn = int(regmap['pc'])
 
-    def Config(self, wordWidth, memSize, regSize=16):
+    def Config(self, isa, wordWidth, memSize, regSize=16):
         self.rg = regSize * [None]
         self.regSize = regSize
         self.memory = memSize * [None]
         self.memorySize = memSize
-        self.width = wordWidth
+        self.width =int(wordWidth / 8)
+        self.pc_rn = int(isa.regmap['pc'])
 
         self.__InitMemory()
 
@@ -74,15 +73,10 @@ class SimCpu:
         args = []
         for arg in sim['args'].split():
             args.append(isaInst.mapObj(arg, pc))
-        ret = isaInst.mapObj(sim['return'], pc)
 
         if len(sim['func']):
             simFunc = eval(sim['func'])
-
-            if ret >= 0:
-                self.rg[ret] = simFunc(self, args)
-            else:
-                simFunc(self, args)
+            simFunc(self, args)
 
     def Decode(self, isa):
         self.pc_addr = self.rg[self.pc_rn]
@@ -101,8 +95,6 @@ class SimCpu:
             raise ValueError
 
         self.Eval(isaInst, sim, pc)
-
-        print(hex(self.rg[11]))
 
     def Execute(self, isa):
         while not self.halt:
@@ -127,7 +119,7 @@ class SimCpu:
         return tmp
 
     def Movw(self, rn, word):
-        print('Movw', rn, word)
+        print('Movw', rn, hex(word))
         self.rg[rn] = word
 
     def Movr(self, rn, rm):
@@ -136,33 +128,24 @@ class SimCpu:
 
     def StmLe (self, dst, src, width):
         print('StmLe : ', hex(dst), hex(src), width)
-        if width == 1:
-            self.memory[dst] = src & 0xff
-        elif width == 2:
-            self.memory[dst] = src & 0xff
-            self.memory[dst + 1] = (src >> 8) & 0xff
-        elif width == 4:
-            self.memory[dst] = src & 0xff
-            self.memory[dst + 1] = (src >> 8) & 0xff
-            self.memory[dst + 2] = (src >> 16) & 0xff
-            self.memory[dst + 3] = (src >> 24) & 0xff
-        else:
+        if width not in [1, 2, 4]:
             raise ValueError
+        i = 0
+        shift = 0
+        while i != width:
+            self.memory[dst + i] = (src >> shift) & 0xff
+            shift += 8
+            i += 1
         return 0
 
     def LdmLe (self, src, width):
+        if width not in [1, 2, 4]:
+            raise ValueError
+        shift = 0
         val = 0x0
-        if self.width == 1:
-            val = self.memory[src] & 0xff
-        elif self.width == 2:
-            val = self.memory[src] & 0xff
-            val |= (self.memory[src + 1] & 0xff) << 8
-        elif self.width == 4:
-            val = self.memory[src] & 0xff
-            val |= (self.memory[src + 1] & 0xff) << 8
-            val |= (self.memory[src + 2] & 0xff) << 16
-            val |= (self.memory[src + 3] & 0xff) << 24
-        else: raise ValueError
+        for m in self.memory[src:src+width]:
+            val |= (m & 0xff) << shift
+            shift += 8
         print('LdmeLe : ', hex(val), hex(src), width)
         return val
     
@@ -175,3 +158,7 @@ class SimCpu:
         for r in self.rg:
             print('r[', i, ']=', hex(r))
             i += 1
+    def DumpMem(self, start, stop):
+        print('DumpMem ', hex(start), hex(stop))
+        for m in self.memory[start:stop+1]:
+            print(hex(m))
