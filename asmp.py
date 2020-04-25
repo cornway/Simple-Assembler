@@ -49,17 +49,10 @@ class AsmUnresolved:
                     opcode |= self.__ApplyWord(instruction.opcode, imask, ilsb)
                     break
                 elif itype == 'reg':
-                    if token in isa.regmap:
-                        # Remap register name
-                        token = isa.regmap[token]
-                    if token[0] in 'r':
-                        # direct register addressing
-                        try:
-                            temp = Parse.ParseInt32Le(token[1:])
-                        except ValueError:
-                            continue
-                        opcode |= self.__ApplyWord(temp, imask, ilsb)
-                        break
+                    token = isa.regmap[token]
+                    temp = int(token)
+                    opcode |= self.__ApplyWord(temp, imask, ilsb)
+                    break
                 elif itype == 'imm':
                     try:
                         const = Parse.ParseInt32Le(token)

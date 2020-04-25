@@ -38,6 +38,7 @@ class IsaInstruction:
         isaMnemonic = jsonDict['mnemonic']
 
         self.objs = {}
+        self.width = 0
         for name in IsaInstruction.objNames:
             objMap = isaObjsMap[name]
             objMask = isaObjMask[name]
@@ -45,9 +46,21 @@ class IsaInstruction:
             objWidth = isaObjWidth[name]
             isaInstObj = IsaInstObj(isaMnemonic, objMap, objMask, objType, objWidth)
             self.objs[name] = isaInstObj
+            self.width += isaInstObj.width
 
         self.opcode = int(jsonDict['opcode'], 16)
         self.mnemonic = isaMnemonic
+
+    def getObj(self, name):
+        return self.objs[name]
+
+    def mapObj(self, name, word):
+        if not len(name):
+            return -1
+        obj = self.getObj(name)
+        if obj.mask:
+            return (word >> obj.lsb) & obj.mask
+        return -1
 
     def Print(self):
         print('========', self.mnemonic, hex(self.opcode))
@@ -89,6 +102,14 @@ class IsaJson:
         for alias in self.alias:
             if alias['name'] in token:
                 return alias
+        return None
+    def getByOpcode(self, word):
+        for inst in self.instructions:
+            opcodeObj = inst.getObj('mnemonic')
+            opcode = (word >> opcodeObj.lsb) & opcodeObj.mask
+            #print('*** ', hex(word), opcode, inst.opcode)
+            if opcode == inst.opcode:
+                return inst
         return None
 
     def Print():

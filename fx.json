@@ -19,39 +19,7 @@
             }
         },
         {
-            "opcode": "0x80",
-            "mnemonic": "ldmi",
-            "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "","p3": ""
-            },
-            "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "","p3": ""
-            },
-            "type": {
-                "mnemonic": "opcode","p1": "reg","p2": "const","p3": ""
-            },
-            "width": {
-                "mnemonic": "2","p1": "0","p2": "4","p3": "0"
-            }
-        },
-        {
             "opcode": "0x81",
-            "mnemonic": "stmi",
-            "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "13:11","p3": ""
-            },
-            "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "0x7","p3": ""
-            },
-            "type": {
-                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": "const"
-            },
-            "width": {
-                "mnemonic": "2","p1": "0","p2": "0","p3": "4"
-            }
-        },
-        {
-            "opcode": "0x82",
             "mnemonic": "stm",
             "map": {
                 "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
@@ -67,7 +35,7 @@
             }
         },
         {
-            "opcode": "0x83",
+            "opcode": "0x80",
             "mnemonic": "ldm",
             "map": {
                 "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
@@ -83,7 +51,7 @@
             }
         },
         {
-            "opcode": "0x84",
+            "opcode": "0xa0",
             "mnemonic": "stmdb",
             "map": {
                 "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
@@ -99,7 +67,7 @@
             }
         },
         {
-            "opcode": "0x85",
+            "opcode": "0xa1",
             "mnemonic": "ldmia",
             "map": {
                 "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
@@ -115,7 +83,7 @@
             }
         },
         {
-            "opcode": "0x86",
+            "opcode": "0xa2",
             "mnemonic": "stmdb16",
             "map": {
                 "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
@@ -131,7 +99,7 @@
             }
         },
         {
-            "opcode": "0x87",
+            "opcode": "0xa3",
             "mnemonic": "ldmia16",
             "map": {
                 "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
@@ -150,10 +118,10 @@
             "opcode": "0x40",
             "mnemonic": "adds",
             "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "13:11","p3": ""
+                "mnemonic": "7:0","p1": "9:8","p2": "12:10","p3": "15:13"
             },
             "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "0x7","p3": ""
+                "mnemonic": "0xff","p1": "0x3","p2": "0x7","p3": "0x7"
             },
             "type": {
                 "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
@@ -166,10 +134,10 @@
             "opcode": "0x41",
             "mnemonic": "mul",
             "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "13:11","p3": ""
+                "mnemonic": "7:0","p1": "9:8","p2": "12:10","p3": "15:13"
             },
             "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "0x7","p3": ""
+                "mnemonic": "0xff","p1": "0x3","p2": "0x7","p3": "0x7"
             },
             "type": {
                 "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
@@ -180,12 +148,28 @@
         },
         {
             "opcode": "0x42",
+            "mnemonic": "divu",
+            "map": {
+                "mnemonic": "7:0","p1": "9:8","p2": "12:10","p3": "15:13"
+            },
+            "mask": {
+                "mnemonic": "0xff","p1": "0x3","p2": "0x7","p3": "0x7"
+            },
+            "type": {
+                "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
+            },
+            "width": {
+                "mnemonic": "2","p1": "0","p2": "0","p3": "0"
+            }
+        },
+        {
+            "opcode": "0x50",
             "mnemonic": "addi",
             "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "15:11","p3": ""
+                "mnemonic": "7:0","p1": "9:8","p2": "15:10","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "0x1f","p3": ""
+                "mnemonic": "0xff","p1": "0x3","p2": "0x1f","p3": ""
             },
             "type": {
                 "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
@@ -195,13 +179,13 @@
             }
         },
         {
-            "opcode": "0x43",
+            "opcode": "0x51",
             "mnemonic": "addi32",
             "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "15:11","p3": ""
+                "mnemonic": "7:0","p1": "9:8","p2": "15:10","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "0x1f","p3": ""
+                "mnemonic": "0xff","p1": "0x3","p2": "0x1f","p3": ""
             },
             "type": {
                 "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
@@ -211,16 +195,16 @@
             }
         },
         {
-            "opcode": "0x44",
+            "opcode": "0x54",
             "mnemonic": "cmp",
             "map": {
-                "mnemonic": "7:0","p1": "10:8","p2": "15:11","p3": ""
+                "mnemonic": "7:0","p1": "11:8","p2": "15:12","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "0x1f","p3": ""
+                "mnemonic": "0xff","p1": "0xf","p2": "0xf","p3": ""
             },
             "type": {
-                "mnemonic": "opcode","p1": "reg","p2": "imm","p3": ""
+                "mnemonic": "opcode","p1": "reg","p2": "reg","p3": ""
             },
             "width": {
                 "mnemonic": "2","p1": "0","p2": "0","p3": "0"
@@ -249,7 +233,7 @@
                 "mnemonic": "7:0","p1": "11:8","p2": "","p3": ""
             },
             "mask": {
-                "mnemonic": "0xff","p1": "0x7","p2": "","p3": ""
+                "mnemonic": "0xff","p1": "0xf","p2": "","p3": ""
             },
             "type": {
                 "mnemonic": "opcode","p1": "reg","p2": "const label_far","p3": ""
@@ -291,7 +275,7 @@
             }
         },
         {
-            "opcode": "0x21",
+            "opcode": "0x22",
             "mnemonic": "jeq",
             "map": {
                 "mnemonic": "7:0","p1": "15:8","p2": "","p3": ""
@@ -307,7 +291,7 @@
             }
         },
         {
-            "opcode": "0x22",
+            "opcode": "0x23",
             "mnemonic": "jneq",
             "map": {
                 "mnemonic": "7:0","p1": "15:8","p2": "","p3": ""
@@ -320,22 +304,6 @@
             },
             "width": {
                 "mnemonic": "2","p1": "0","p2": "0","p3": "0"
-            }
-        },
-        {
-            "opcode": "0x23",
-            "mnemonic": "ji",
-            "map": {
-                "mnemonic": "7:0","p1": "","p2": "","p3": ""
-            },
-            "mask": {
-                "mnemonic": "0xff","p1": "","p2": "","p3": ""
-            },
-            "type": {
-                "mnemonic": "opcode","p1": "label_far","p2": "","p3": ""
-            },
-            "width": {
-                "mnemonic": "2","p1": "4","p2": "0","p3": "0"
             }
         },
         {
@@ -463,14 +431,34 @@
         {
             "name": "inc",
             "alias": "addi32","p1": "%1","p2": "%2","p3": ""
+        },
+        {
+            "name": "ji",
+            "alias": "movw","p1": "pc","p2": "%1","p3": ""
+        },
+        {
+            "name": "tst",
+            "alias": "cmp","p1": "%1","p2": "0","p3": ""
         }
     ],
-    "regmap": [
-        {
-            "sp": "r10",
-            "pc": "r11",
-            "lr": "r12"
-        }
-    ]
+    "regmap": {
+        "r0": "0",
+        "r1": "1",
+        "r2": "2",
+        "r3": "3",
+        "r4": "4",
+        "r5": "5",
+        "r6": "6",
+        "r7": "7",
+        "r8": "8",
+        "r9": "9",
+        "r10": "10",
+        "r11": "11",
+        "r12": "12",
+        "r13": "13",
+        "sp": "10",
+        "pc": "11",
+        "lr": "12"
+    }
 }
 }

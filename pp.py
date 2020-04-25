@@ -34,24 +34,24 @@ class AsmAlias:
                             self.lineBuffer.append(tokens[0])
                         multilineBegin = 0
 
-    def ApplyAlias(asmToken_in, isa):
-        mnemonic = asmToken_in.tokens[0]
+    def ApplyAlias(asmToken, isa):
+        mnemonic = asmToken.tokens[0]
         alias = isa.containsAlias(mnemonic)
         if alias is None:
             return None
         else:
-            i = 1
-            asmToken = asmToken_in
-            asmToken.tokens[0] = alias['alias']
+            tokens = []
+            tokens.append(alias['alias'])
+
             for arg in IsaInstruction.objNames[1:]:
                 if len(alias[arg]) > 0 and alias[arg][0] in '%':
                     temp = int(alias[arg][1:])
                     if temp > 3:
-                        print('Garbage')
-                    asmToken.tokens[i] = asmToken_in.tokens[temp]
+                        raise ValueError
+                    tokens.append(asmToken.tokens[temp])
                 elif len(alias[arg]):
-                    asmToken.tokens[i] = alias[arg]
-                i += 1
+                    tokens.append(alias[arg])
+            asmToken.tokens = tokens
         return asmToken
 
     def subAlias(self, token, alias):

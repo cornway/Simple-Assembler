@@ -15,6 +15,8 @@ asm.ParseTokens(isaJson)
 asm.ParseSections(isaJson)
 binArray = asm.Resolve(isaJson)
 
-mifWriter = MifWriter(binArray, 2)
+mifWriter = MifWriter(binArray, 16)
+
+mifWriter.Write('out.mif')
 
 mifWriter.Print()
